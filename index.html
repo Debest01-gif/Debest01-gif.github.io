@@ -56,7 +56,8 @@ canvas{position:fixed;top:0;left:0;pointer-events:none;width:100%;height:100%;}
 <body>
 
 <!-- Background Music -->
-<audio id="bgMusic" preload="auto"></audio>
+<audio id="coverMusic" preload="auto" loop></audio>
+<audio id="mainMusic" preload="auto" loop></audio>
 
 <!-- COVER -->
 <div id="cover" class="section">
@@ -100,22 +101,16 @@ for(let i=0;i<100;i++){
     document.body.appendChild(star);
 }
 
-// Playlist of songs (your uploaded music + placeholder second song)
-const playlist = [
-    "a1b80bdd-81df-4aaf-86aa-e640cdce5a5e.mp3",
-    "song2.mp3" // rename second song here if you have another file
-];
+// Music setup
+const coverAudio = document.getElementById("coverMusic");
+const mainAudio = document.getElementById("mainMusic");
 
-let currentSong = 0;
-const audio = document.getElementById("bgMusic");
+// Assign music files (make sure they are in the same folder as index.html)
+coverAudio.src = "song1.mp3"; 
+mainAudio.src = "song2.mp3"; 
 
-function playNextSong(){
-    audio.src = playlist[currentSong];
-    audio.play().catch(()=>{});
-    currentSong = (currentSong + 1) % playlist.length;
-}
-audio.addEventListener('ended', playNextSong);
-playNextSong(); // start immediately
+// Play cover music immediately
+coverAudio.play().catch(()=>{});
 
 // Love message
 const text=`Babe, loving you has been the most beautiful chapter of my life.
@@ -145,6 +140,11 @@ function typeWriter(){
 function openLove(){
     document.getElementById("cover").classList.add("hidden");
     document.getElementById("mainPage").classList.remove("hidden");
+
+    // Stop cover music and play main page music
+    coverAudio.pause();
+    mainAudio.play().catch(()=>{});
+
     typeWriter();
     setInterval(createHeart,400);
     setInterval(createMagicParticles,600);
